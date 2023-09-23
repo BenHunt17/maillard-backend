@@ -1,5 +1,6 @@
 import express from "express";
 import dotenv from "dotenv";
+import { connectToDbTest } from "./db";
 
 dotenv.config();
 
@@ -12,4 +13,5 @@ app.get("/", (_, res) => {
 
 app.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);
+  connectToDbTest();
 });
