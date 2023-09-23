@@ -8,10 +8,11 @@ const app = express();
 const port = process.env.PORT;
 
 app.get("/", (_, res) => {
-  res.send("Maillard API");
+  connectToDbTest()
+    .then((_) => res.send("Connected to DB"))
+    .catch((_) => res.send("DB connection unsuccessful"));
 });
 
 app.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);
-  connectToDbTest();
 });
