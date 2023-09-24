@@ -8,9 +8,5 @@ const uri = process.env.MONGO_URI || "";
 const client = new MongoClient(uri);
 
 export async function connectToDbTest() {
-  try {
-    await client.connect();
-  } catch (error) {
-    console.log(error);
-  }
+  await client.connect();
 }
