@@ -27,6 +27,7 @@ app.get("/", async (_, res) => {
 app.use("/auth", authRouter);
 
 app.get("/test", authenticateMiddleware, (req, res) => {
+  //@ts-ignore
   console.log("user", req.user);
   res.json("Success");
 });
