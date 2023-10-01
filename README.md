@@ -9,5 +9,10 @@ The backend service for the Maillard recipe manager application
 
 PORT = [A free port number]
 MONGO_URI = [Your mongoDB URI]
+GOOGLE_API_CLIENT_ID = [Your Id]
+GOOGLE_API_CLIENT_SECRET = [Your Secret]
+REDIRECT_URI = [Redirect URL]
+COOKIES_SECRET = [Cookies Secret]
+CONSUMER_URL = [URL of the consumer application]
 
 - Open the terminal and run `npm run dev`
