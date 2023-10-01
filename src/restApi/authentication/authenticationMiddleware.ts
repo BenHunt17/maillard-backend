@@ -29,10 +29,12 @@ export default async function authenticateMiddleware(
       res.cookie("access_token", tokens.access_token, {
         httpOnly: true,
         signed: true,
+        sameSite: "none",
       });
       res.cookie("refresh_token", tokens.refresh_token, {
         httpOnly: true,
         signed: true,
+        sameSite: "none",
       });
       payload = await getUserInfo(tokens.access_token);
     }
