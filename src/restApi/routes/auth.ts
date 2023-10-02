@@ -35,12 +35,10 @@ authRouter.get("/google/redirect", async (req, res) => {
     res.cookie("access_token", userCredentials.access_token, {
       httpOnly: true,
       signed: true,
-      sameSite: "none",
     });
     res.cookie("refresh_token", userCredentials.refresh_token, {
       httpOnly: true,
       signed: true,
-      sameSite: "none",
     });
     res.redirect(303, `${process.env.CONSUMER_URL}?success=true`);
   } catch (e) {
