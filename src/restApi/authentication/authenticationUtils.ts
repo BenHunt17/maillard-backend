@@ -54,3 +54,13 @@ export async function getNewAccessToken(refreshToken: string) {
 
   return tokens.credentials;
 }
+
+export async function logout() {
+  const client = new OAuth2Client({
+    clientId: process.env.GOOGLE_API_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_API_CLIENT_SECRET,
+    redirectUri: process.env.REDIRECT_URI,
+  });
+
+  await client.revokeCredentials();
+}

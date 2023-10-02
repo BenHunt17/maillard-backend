@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import {
   getAuthUrl,
   getUserCredentials,
+  logout,
 } from "../authentication/authenticationUtils";
 
 dotenv.config();
@@ -35,14 +36,26 @@ authRouter.get("/google/redirect", async (req, res) => {
     res.cookie("access_token", userCredentials.access_token, {
       httpOnly: true,
       signed: true,
+      sameSite: "lax",
     });
     res.cookie("refresh_token", userCredentials.refresh_token, {
       httpOnly: true,
       signed: true,
+      sameSite: "lax",
     });
     res.redirect(303, `${process.env.CONSUMER_URL}?success=true`);
   } catch (e) {
     console.error(e);
     res.redirect(303, `${process.env.CONSUMER_URL}?success=false`);
+  }
+});
+
+authRouter.get("google/logout", async (_, res) => {
+  try {
+    await logout();
+    res.json({ message: "Logout successful" });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ message: "Something went wrong" });
   }
 });
