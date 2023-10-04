@@ -2,7 +2,6 @@ import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import { authRouter } from "./restApi/routes/auth";
-import authenticateMiddleware from "./restApi/authentication/authenticationMiddleware";
 import cookieParser from "cookie-parser";
 
 declare module "express" {
@@ -25,12 +24,6 @@ app.get("/", async (_, res) => {
 });
 
 app.use("/auth", authRouter);
-
-app.get("/test", authenticateMiddleware, (req, res) => {
-  //@ts-ignore
-  console.log("user", req.user);
-  res.json("Success");
-});
 
 app.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);

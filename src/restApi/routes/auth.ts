@@ -5,6 +5,7 @@ import {
   getUserCredentials,
   logout,
 } from "../authentication/authenticationUtils";
+import authenticateMiddleware from "../authentication/authenticationMiddleware";
 
 dotenv.config();
 
@@ -45,14 +46,18 @@ authRouter.get("/google/redirect", async (req, res) => {
       sameSite: "none",
       secure: true,
     });
-    res.redirect(303, `${process.env.CONSUMER_URL}?success=true`);
+    res.redirect(303, `${process.env.CONSUMER_URL}/login?admin=true"`);
   } catch (e) {
     console.error(e);
-    res.redirect(303, `${process.env.CONSUMER_URL}?success=false`);
+    res.redirect(303, `${process.env.CONSUMER_URL}/login`);
   }
 });
 
-authRouter.get("google/logout", async (_, res) => {
+authRouter.get("/google/admin", authenticateMiddleware, (_, res) =>
+  res.send({ message: true })
+);
+
+authRouter.get("/google/logout", async (_, res) => {
   try {
     await logout();
     res.json({ message: "Logout successful" });
