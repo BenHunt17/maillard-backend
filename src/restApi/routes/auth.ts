@@ -46,10 +46,10 @@ authRouter.get("/google/redirect", async (req, res) => {
       sameSite: "none",
       secure: true,
     });
-    res.redirect(303, `${process.env.CONSUMER_URL}/login?admin=true"`);
+    res.redirect(303, `${process.env.CONSUMER_URL}/`);
   } catch (e) {
     console.error(e);
-    res.redirect(303, `${process.env.CONSUMER_URL}/login`);
+    res.redirect(303, `${process.env.CONSUMER_URL}/`);
   }
 });
 
