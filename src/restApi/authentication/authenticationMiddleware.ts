@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { getNewAccessToken, getUserInfo } from "./authenticationUtils";
+import { authCookieSettings } from "./authCookies";
 
 export default async function authenticateMiddleware(
   req: Request,
@@ -26,20 +27,8 @@ export default async function authenticateMiddleware(
 
       const tokens = await getNewAccessToken(refreshToken);
 
-      res.cookie("access_token", tokens.access_token, {
-        httpOnly: true,
-        signed: true,
-        sameSite: "none",
-        secure: true,
-        expires: new Date(Date.now() + 86400),
-      });
-      res.cookie("refresh_token", tokens.refresh_token, {
-        httpOnly: true,
-        signed: true,
-        sameSite: "none",
-        secure: true,
-        expires: new Date(Date.now() + 86400),
-      });
+      res.cookie("access_token", tokens.access_token, authCookieSettings);
+      res.cookie("refresh_token", tokens.refresh_token, authCookieSettings);
       payload = await getUserInfo(tokens.access_token);
     }
 
