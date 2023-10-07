@@ -31,12 +31,14 @@ export default async function authenticateMiddleware(
         signed: true,
         sameSite: "none",
         secure: true,
+        expires: new Date(Date.now() + 86400),
       });
       res.cookie("refresh_token", tokens.refresh_token, {
         httpOnly: true,
         signed: true,
         sameSite: "none",
         secure: true,
+        expires: new Date(Date.now() + 86400),
       });
       payload = await getUserInfo(tokens.access_token);
     }
