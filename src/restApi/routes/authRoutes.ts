@@ -32,7 +32,7 @@ authRouter.get("/google/redirect", async (req, res) => {
     // const userInfo = await getUserInfo(userCredentials.access_token);
     // if (userInfo.id !== "valid id") {
     //   //TODO - implement db check
-    //   throw new Error("User is not an administrator");
+    //   throw new ApiError("User is not an administrator",403);
     // }
 
     res.cookie(
