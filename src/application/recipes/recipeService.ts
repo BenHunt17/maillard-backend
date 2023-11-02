@@ -7,7 +7,7 @@ import {
   recipesDataAccessUpdateImageUrl,
   recipesDataAccessUpdateIngredients,
   recipesDataAccessUpdateInstructions,
-} from "../../dataAccess/recipes/recipesDataAccess";
+} from "../../dataAccess/recipe/recipesDataAccess";
 import { azureBlobStorageUpload } from "../../azureBlobStorage/azureBlobStorageUpload";
 import { azureBlobStorageDelete } from "../../azureBlobStorage/azureBlobStorageDelete";
 import { ImageFile } from "../../domain/types/common/imageFile";
