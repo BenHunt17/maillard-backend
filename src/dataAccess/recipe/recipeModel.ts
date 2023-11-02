@@ -1,4 +1,6 @@
 import { ObjectId } from "mongodb";
+import { IngredientModel } from "./ingredient/ingredientModel";
+import { InstructionModel } from "./instruction/instructionModel";
 
 export interface RecipeModel {
   _id: ObjectId;
@@ -6,22 +8,11 @@ export interface RecipeModel {
   creationDate: Date;
   imageUrl: string | null;
   description: string | null;
-  ingredients: {
-    id: ObjectId;
-    name: string;
-    quantity: number;
-    externalId: string;
-    displayLabel: string | null;
-  }[];
-  instructions: {
-    id: ObjectId;
-    priorityNumber: number;
-    step: string;
-  }[];
+  ingredients: IngredientModel[];
+  instructions: InstructionModel[];
   data: {
     prepTime: number;
     cookTime: number;
     washingUpTime: number;
-    mealType: string;
   };
 }

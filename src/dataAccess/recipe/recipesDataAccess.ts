@@ -8,14 +8,14 @@ import { Instruction } from "../../domain/types/recipe/instruction";
 import { ApiError } from "../../domain/types/common/apiError";
 import { mapItemsToPaginatedResponse } from "../../domain/types/pagination/paginationResponseMapper";
 import {
-  mapIngredientToIngredientModel,
-  mapInstructionToInstructionModel,
   mapRecipeModelToRecipe,
   mapRecipeToRecipeModel,
 } from "./recipeModelMappers";
+import { mapIngredientToIngredientModel } from "./ingredient/ingredientModelMapper";
+import { mapInstructionToInstructionModel } from "./instruction/instructionModelMapper";
 
 export async function recipesDataAccessFind(
-  searchTerm: string,
+  searchTerm: string | undefined,
   offset: number,
   limit: number
 ): Promise<PaginatedResponse<Recipe>> {
@@ -23,7 +23,7 @@ export async function recipesDataAccessFind(
 
   const filter = {
     $text: {
-      $search: searchTerm,
+      $search: searchTerm ?? "",
     },
   };
   const options = {
@@ -64,7 +64,11 @@ export async function recipesDataAccessCreate(recipe: Recipe): Promise<Recipe> {
 
 export async function recipesDataAccessUpdate(
   id: string,
-  input: { name: string; description: string; data: Recipe["data"] }
+  input: {
+    name: string;
+    description?: string | undefined;
+    data: Recipe["data"];
+  }
 ): Promise<Recipe> {
   const updateFilter = {
     $set: input,

@@ -8,7 +8,7 @@ export function mapRecipeCreateInputToRecipe(
     id: "",
     name: recipeCreateInput.name,
     creationDate: new Date(),
-    imageUrl: null,
+    imageUrl: undefined,
     description: recipeCreateInput.description,
     ingredients: [],
     instructions: [],
