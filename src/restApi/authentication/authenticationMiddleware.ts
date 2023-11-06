@@ -29,6 +29,7 @@ export default async function authenticateMiddleware(
 
       res.cookie("access_token", tokens.access_token, authCookieSettings);
       res.cookie("refresh_token", tokens.refresh_token, authCookieSettings);
+
       payload = await getUserInfo(tokens.access_token);
     }
 

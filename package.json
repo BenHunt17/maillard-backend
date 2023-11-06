@@ -11,17 +11,23 @@
   "author": "Benjamin Hunt",
   "license": "ISC",
   "dependencies": {
+    "@azure/storage-blob": "^12.16.0",
+    "body-parser": "^1.20.2",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
+    "cross-fetch": "^4.0.0",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "google-auth-library": "^9.0.0",
-    "mongodb": "^6.1.0"
+    "mongodb": "^6.1.0",
+    "multer": "^1.4.5-lts.1",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "@types/cookie-parser": "^1.4.4",
     "@types/cors": "^2.8.14",
     "@types/express": "^4.17.17",
+    "@types/multer": "^1.4.8",
     "@types/node": "^20.6.3",
     "concurrently": "^8.2.1",
     "nodemon": "^3.0.1",
