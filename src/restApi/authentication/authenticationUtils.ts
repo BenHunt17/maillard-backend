@@ -1,4 +1,5 @@
 import { OAuth2Client } from "google-auth-library";
+import fetch from "cross-fetch";
 
 export function getAuthUrl() {
   const client = new OAuth2Client({

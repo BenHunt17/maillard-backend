@@ -1,6 +1,7 @@
-import { Nutrient } from "./nutrient";
+
 import { Ingredient } from "./ingredient";
 import { Instruction } from "./instruction";
+import { Nutrient } from "./nutrient";
 
 export interface Recipe {
   id: string;
