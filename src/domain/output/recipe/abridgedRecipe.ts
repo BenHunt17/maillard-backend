@@ -1,4 +1,4 @@
-interface AbridgedRecipe {
+export interface AbridgedRecipe {
   id: string;
   name: string;
   creationDate: Date;

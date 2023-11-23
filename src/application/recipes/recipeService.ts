@@ -3,6 +3,7 @@ import {
   recipesDataAccessDelete,
   recipesDataAccessFind,
   recipesDataAccessGet,
+  recipesDataAccessSearch,
   recipesDataAccessUpdate,
   recipesDataAccessUpdateImageUrl,
   recipesDataAccessUpdateIngredients,
@@ -23,15 +24,25 @@ import { RecipeSearchInput } from "../../restApi/input/recipe/recipeSearchInput"
 import { mapItemsToPaginatedResponse } from "../../domain/types/pagination/paginationResponseMapper";
 import { mapRecipeToAbridgedRecipe } from "../../domain/output/recipe/abridgedRecipeMapper";
 import { getCollectiveNutrients } from "./recipeUtils";
+import { PaginatedResponse } from "../../domain/types/pagination/paginatedResponse";
+import { Recipe } from "../../domain/types/recipe/recipe";
 
 export async function recipeServiceSearch(
   recipeSearchInput: RecipeSearchInput
 ) {
-  const recipesPagination = await recipesDataAccessFind(
-    recipeSearchInput.searchTerm,
-    recipeSearchInput.offset,
-    recipeSearchInput.limit
-  );
+  let recipesPagination: PaginatedResponse<Recipe>;
+  if (!!recipeSearchInput.searchTerm) {
+    recipesPagination = await recipesDataAccessSearch(
+      recipeSearchInput.searchTerm,
+      recipeSearchInput.offset,
+      recipeSearchInput.limit
+    );
+  } else {
+    recipesPagination = await recipesDataAccessFind(
+      recipeSearchInput.offset,
+      recipeSearchInput.limit
+    );
+  }
 
   return mapItemsToPaginatedResponse(
     recipesPagination.items.map((recipe) => mapRecipeToAbridgedRecipe(recipe)),
@@ -111,7 +122,7 @@ export async function recipeServiceUpdateImage(
 ) {
   const recipe = await recipesDataAccessGet(id);
   const imageUrl = await azureBlobStorageUpload(
-    `recipes/${recipe.name}`,
+    `recipes/${recipe.id}`,
     imageFile
   );
 
@@ -125,7 +136,7 @@ export async function recipeServiceUpdateImage(
 
 export async function recipeServiceDeleteImage(id: string) {
   const recipe = await recipesDataAccessGet(id);
-  if (!azureBlobStorageDelete(`recipes/${recipe.name}`)) {
+  if (!azureBlobStorageDelete(`recipes/${recipe.id}`)) {
     throw new ApiError(
       `No file for recipe with id ${id} exists in blob storage`,
       404

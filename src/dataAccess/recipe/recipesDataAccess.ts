@@ -14,28 +14,70 @@ import {
 import { mapIngredientToIngredientModel } from "./ingredient/ingredientModelMapper";
 import { mapInstructionToInstructionModel } from "./instruction/instructionModelMapper";
 
-export async function recipesDataAccessFind(
-  searchTerm: string | undefined,
+export async function recipesDataAccessSearch(
+  searchTerm: string,
   offset: number,
   limit: number
 ): Promise<PaginatedResponse<Recipe>> {
   const recipesCollection = await getRecipesCollection();
 
-  const filter = {
-    $text: {
-      $search: searchTerm ?? "",
+  const agg = [
+    {
+      $search: {
+        index: "searchName",
+        text: {
+          query: searchTerm,
+          path: {
+            wildcard: "*",
+          },
+          fuzzy: {},
+        },
+      },
     },
-  };
-  const options = {
-    skip: offset,
-    limit: limit,
-  };
-  const recipeModels = await recipesCollection.find(filter, options).toArray();
+    {
+      $facet: {
+        recipes: [
+          {
+            $skip: offset,
+          },
+          {
+            $limit: limit,
+          },
+        ],
+        total: [{ $count: "total" }],
+      },
+    },
+  ];
 
-  const total = await recipesCollection.countDocuments(filter);
+  const result = (
+    await recipesCollection
+      .aggregate<{ recipes: RecipeModel[]; total: number }>(agg)
+      .toArray()
+  )[0];
+
+  const recipes = result.recipes.map((recipeModel) =>
+    mapRecipeModelToRecipe(recipeModel)
+  );
+
+  return mapItemsToPaginatedResponse(recipes, offset, result.total);
+}
+
+export async function recipesDataAccessFind(
+  offset: number,
+  limit: number
+): Promise<PaginatedResponse<Recipe>> {
+  const recipesCollection = await getRecipesCollection();
+
+  const recipeModels = await recipesCollection
+    .find()
+    .skip(offset)
+    .limit(limit)
+    .toArray();
+
   const recipes = recipeModels.map((recipeModel) =>
     mapRecipeModelToRecipe(recipeModel)
   );
+  const total = await recipesCollection.countDocuments();
 
   return mapItemsToPaginatedResponse(recipes, offset, total);
 }

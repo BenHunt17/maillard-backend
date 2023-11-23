@@ -13,5 +13,5 @@ export async function getDb() {
     process.exit(1);
   }
 
-  return client.db("maillard-api-db");
+  return client.db("maillard-recipe-management");
 }

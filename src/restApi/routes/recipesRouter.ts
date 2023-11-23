@@ -28,7 +28,6 @@ const upload = multer({ storage: storage });
 recipesRouter.post("/search", async (req, res, next) => {
   try {
     const recipeSearchInput = parseOrThrow(recipeSearchInputSchema, req.body);
-
     const paginatedRecipes = await recipeServiceSearch(recipeSearchInput);
     res.json({ paginatedRecipes });
   } catch (e) {
