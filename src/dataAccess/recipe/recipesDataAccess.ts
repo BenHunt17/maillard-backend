@@ -25,12 +25,9 @@ export async function recipesDataAccessSearch(
     {
       $search: {
         index: "searchName",
-        text: {
+        autocomplete: {
           query: searchTerm,
-          path: {
-            wildcard: "*",
-          },
-          fuzzy: {},
+          path: "name",
         },
       },
     },

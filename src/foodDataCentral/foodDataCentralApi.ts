@@ -2,6 +2,8 @@ import dotenv from "dotenv";
 import { FoodDataCentralSearchResultType } from "./types/foodDataCentralSearchResultType";
 import { FoodDataCentralAbridgedFoodItem } from "./types/foodDataCentralAbridgedFoodItem";
 import fetch from "cross-fetch";
+import { foodDataCentralSearchResultToDomainType } from "./types/foodDataCentralDomainMapper";
+import { IngredientSearchResult } from "../domain/types/ingredient/ingredientSearchResult";
 
 dotenv.config();
 
@@ -9,7 +11,7 @@ export async function foodDataCentralApiSearch(
   searchTerm: string,
   offset: number,
   limit: number
-): Promise<FoodDataCentralSearchResultType | null> {
+): Promise<IngredientSearchResult[] | null> {
   const queryParams = new URLSearchParams({
     api_key: process.env.FOOD_DATA_CENTRAL_API_KEY || "",
     query: searchTerm,
@@ -25,7 +27,8 @@ export async function foodDataCentralApiSearch(
       throw new Error(response.statusText);
     }
 
-    return response.json();
+    const searchResult = await response.json();
+    return foodDataCentralSearchResultToDomainType(searchResult);
   } catch (e) {
     console.error(e);
     return null;

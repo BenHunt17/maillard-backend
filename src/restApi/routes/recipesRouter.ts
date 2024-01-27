@@ -126,7 +126,6 @@ recipesRouter.patch(
 recipesRouter.patch("/:id/removeimage", async (req, res, next) => {
   try {
     const recipeId = req.params.id;
-
     const recipe = await recipeServiceDeleteImage(recipeId);
     res.json({ recipe });
   } catch (e) {
