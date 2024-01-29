@@ -17,20 +17,32 @@ export async function getCollectiveNutrients(ingredients: Ingredient[]) {
   return foods.reduce<Nutrient[]>((acc, curr) => {
     curr.foodNutrients?.forEach((foodNutrient) => {
       if (
-        !(foodNutrient.name && foodNutrient.amount && foodNutrient.unitName)
+        !(
+          foodNutrient.number &&
+          foodNutrient.name &&
+          foodNutrient.amount &&
+          foodNutrient.unitName
+        )
       ) {
         return [];
       }
 
+      const quantity =
+        ingredients.find(
+          (ingredient) => ingredient.externalId === curr.fdcId.toString()
+        )?.quantity ?? DEFAULT_QUANTITY_G;
+      const amount = foodNutrient.amount * (quantity / DEFAULT_QUANTITY_G);
+
       const existingNutrientIdx = acc.findIndex(
-        (nutrient) => nutrient.name === foodNutrient.name
+        (nutrient) => nutrient.number === foodNutrient.number
       );
       if (acc[existingNutrientIdx]) {
         acc[existingNutrientIdx].value += foodNutrient.amount;
       } else {
         acc.push({
+          number: foodNutrient.number,
           name: foodNutrient.name,
-          value: foodNutrient.amount,
+          value: amount,
           unitName: foodNutrient.unitName,
         });
       }
@@ -38,3 +50,5 @@ export async function getCollectiveNutrients(ingredients: Ingredient[]) {
     return acc;
   }, []);
 }
+
+const DEFAULT_QUANTITY_G = 100;
