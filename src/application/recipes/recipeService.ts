@@ -22,7 +22,7 @@ import { InstructionInput } from "../../restApi/input/recipe/instruction/instruc
 import { mapInstructionInputToInstruction } from "../../restApi/input/recipe/instruction/instructionInputMapper";
 import { RecipeSearchInput } from "../../restApi/input/recipe/recipeSearchInput";
 import { mapItemsToPaginatedResponse } from "../../domain/types/pagination/paginationResponseMapper";
-import { mapRecipeToAbridgedRecipe } from "../../domain/output/recipe/abridgedRecipeMapper";
+import { mapRecipeToAbridgedRecipe } from "../../domain/abridgedTypes/recipe/abridgedRecipeMapper";
 import { getCollectiveNutrients } from "./recipeUtils";
 import { PaginatedResponse } from "../../domain/types/pagination/paginatedResponse";
 import { Recipe } from "../../domain/types/recipe/recipe";

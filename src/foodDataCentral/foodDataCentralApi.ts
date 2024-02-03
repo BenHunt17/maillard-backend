@@ -1,5 +1,4 @@
 import dotenv from "dotenv";
-import { FoodDataCentralSearchResultType } from "./types/foodDataCentralSearchResultType";
 import { FoodDataCentralAbridgedFoodItem } from "./types/foodDataCentralAbridgedFoodItem";
 import fetch from "cross-fetch";
 import { foodDataCentralSearchResultToDomainType } from "./types/foodDataCentralDomainMapper";
