@@ -9,9 +9,9 @@ export const recipeCreateInputSchema = z.object({
   ingredients: z.array(ingredientInputSchema),
   instructions: z.array(instructionInputSchema),
   data: z.object({
-    prepTime: z.number().int().positive().max(9999),
-    cookTime: z.number().int().positive().max(9999),
-    washingUpTime: z.number().int().positive().max(9999),
+    prepTime: z.number().int().nonnegative().max(9999),
+    cookTime: z.number().int().nonnegative().max(9999),
+    washingUpTime: z.number().int().nonnegative().max(9999),
   }),
 });
 
