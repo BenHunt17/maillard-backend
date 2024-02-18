@@ -8,13 +8,6 @@ import bodyParser from "body-parser";
 import { recipesRouter } from "./restApi/routes/recipesRouter";
 import { errorHandlerMiddleware } from "./restApi/error/errorHandlerMiddleware";
 
-declare module "express" {
-  // TODO - figure out how to make this cleaner
-  interface Request {
-    user?: unknown;
-  }
-}
-
 dotenv.config();
 
 const app = express();

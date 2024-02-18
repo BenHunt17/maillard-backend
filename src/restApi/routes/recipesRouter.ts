@@ -19,6 +19,7 @@ import { ingredientInputSchema } from "../input/recipe/ingredient/ingredientInpu
 import { z } from "zod";
 import { parseOrThrow } from "../error/parseOrThrow";
 import { ApiError } from "../../domain/types/common/apiError";
+import adminAuthorizationMiddleware from "../auth/adminAuthorizationMiddleware";
 
 export const recipesRouter = Router();
 
@@ -45,67 +46,84 @@ recipesRouter.get("/:id", async (req, res, next) => {
   }
 });
 
-recipesRouter.post("/", async (req, res, next) => {
-  try {
-    const recipeCreateInput = parseOrThrow(recipeCreateInputSchema, req.body);
+recipesRouter.post(
+  "/",
+  adminAuthorizationMiddleware,
+  async (req, res, next) => {
+    try {
+      const recipeCreateInput = parseOrThrow(recipeCreateInputSchema, req.body);
 
-    const recipe = await recipeServiceCreate(recipeCreateInput);
-    res.json({ recipe });
-  } catch (e) {
-    next(e);
+      const recipe = await recipeServiceCreate(recipeCreateInput);
+      res.json({ recipe });
+    } catch (e) {
+      next(e);
+    }
   }
-});
+);
 
-recipesRouter.patch("/:id", async (req, res, next) => {
-  try {
-    const recipeId = req.params.id;
-    const recipeUpdateInput = parseOrThrow(recipeUpdateInputSchema, req.body);
+recipesRouter.patch(
+  "/:id",
+  adminAuthorizationMiddleware,
+  async (req, res, next) => {
+    try {
+      const recipeId = req.params.id;
+      const recipeUpdateInput = parseOrThrow(recipeUpdateInputSchema, req.body);
 
-    const recipe = await recipeServiceUpdate(recipeId, recipeUpdateInput);
-    res.json({ recipe });
-  } catch (e) {
-    next(e);
+      const recipe = await recipeServiceUpdate(recipeId, recipeUpdateInput);
+      res.json({ recipe });
+    } catch (e) {
+      next(e);
+    }
   }
-});
+);
 
-recipesRouter.patch("/:id/ingredients", async (req, res, next) => {
-  try {
-    const recipeId = req.params.id;
-    const ingredientsInput = parseOrThrow(
-      z.array(ingredientInputSchema),
-      req.body
-    );
+recipesRouter.patch(
+  "/:id/ingredients",
+  adminAuthorizationMiddleware,
+  async (req, res, next) => {
+    try {
+      const recipeId = req.params.id;
+      const ingredientsInput = parseOrThrow(
+        z.array(ingredientInputSchema),
+        req.body
+      );
 
-    const recipe = await recipeServiceUpdateIngredients(
-      recipeId,
-      ingredientsInput
-    );
-    res.json({ recipe });
-  } catch (e) {
-    next(e);
+      const recipe = await recipeServiceUpdateIngredients(
+        recipeId,
+        ingredientsInput
+      );
+      res.json({ recipe });
+    } catch (e) {
+      next(e);
+    }
   }
-});
+);
 
-recipesRouter.patch("/:id/instructions", async (req, res, next) => {
-  try {
-    const recipeId = req.params.id;
-    const instructionsInput = parseOrThrow(
-      z.array(instructionInputSchema),
-      req.body
-    );
+recipesRouter.patch(
+  "/:id/instructions",
+  adminAuthorizationMiddleware,
+  async (req, res, next) => {
+    try {
+      const recipeId = req.params.id;
+      const instructionsInput = parseOrThrow(
+        z.array(instructionInputSchema),
+        req.body
+      );
 
-    const recipe = await recipeServiceUpdateInstructions(
-      recipeId,
-      instructionsInput
-    );
-    res.json({ recipe });
-  } catch (e) {
-    next(e);
+      const recipe = await recipeServiceUpdateInstructions(
+        recipeId,
+        instructionsInput
+      );
+      res.json({ recipe });
+    } catch (e) {
+      next(e);
+    }
   }
-});
+);
 
 recipesRouter.patch(
   "/:id/addimage",
+  adminAuthorizationMiddleware,
   upload.single("imageFile"),
   async (req, res, next) => {
     try {
@@ -123,23 +141,31 @@ recipesRouter.patch(
   }
 );
 
-recipesRouter.patch("/:id/removeimage", async (req, res, next) => {
-  try {
-    const recipeId = req.params.id;
-    const recipe = await recipeServiceDeleteImage(recipeId);
-    res.json({ recipe });
-  } catch (e) {
-    next(e);
+recipesRouter.patch(
+  "/:id/removeimage",
+  adminAuthorizationMiddleware,
+  async (req, res, next) => {
+    try {
+      const recipeId = req.params.id;
+      const recipe = await recipeServiceDeleteImage(recipeId);
+      res.json({ recipe });
+    } catch (e) {
+      next(e);
+    }
   }
-});
+);
 
-recipesRouter.delete("/:id", async (req, res, next) => {
-  try {
-    const recipeId = req.params.id;
+recipesRouter.delete(
+  "/:id",
+  adminAuthorizationMiddleware,
+  async (req, res, next) => {
+    try {
+      const recipeId = req.params.id;
 
-    const recipe = await recipeServiceDelete(recipeId);
-    res.json({ recipe });
-  } catch (e) {
-    next(e);
+      const recipe = await recipeServiceDelete(recipeId);
+      res.json({ recipe });
+    } catch (e) {
+      next(e);
+    }
   }
-});
+);
