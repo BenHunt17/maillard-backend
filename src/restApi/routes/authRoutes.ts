@@ -15,7 +15,7 @@ authRouter.post("/gettokens", async (req, res, next) => {
     const credentials = await getTokensWithCode(req.body.code);
 
     res.cookie("refresh_token", credentials.refresh_token, authCookieSettings);
-    res.json(credentials.access_token);
+    res.json({ accessToken: credentials.access_token });
   } catch (e) {
     next(e);
   }
@@ -27,7 +27,7 @@ authRouter.get("/refreshtoken", async (req, res, next) => {
     const credentials = await getTokensWithRefreshToken(refreshToken);
 
     res.cookie("refresh_token", credentials.refresh_token, authCookieSettings);
-    res.json(credentials.access_token);
+    res.json({ accessToken: credentials.access_token });
   } catch (e) {
     next(e);
   }

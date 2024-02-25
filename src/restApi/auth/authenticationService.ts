@@ -8,20 +8,15 @@ export async function getTokensWithCode(code: string) {
     clientSecret: process.env.GOOGLE_API_CLIENT_SECRET,
     redirectUri: "postmessage",
   });
-  try {
-    const response = await client.getToken(code);
+  const response = await client.getToken(code);
 
-    if (!response.tokens.access_token) {
-      throw Error();
-    }
-    const userInfo = await getUserInfo(response.tokens.access_token);
-    await isAdminOrThrow(userInfo.id, userInfo.email);
-
-    return response.tokens;
-  } catch (e) {
-    console.error(e);
-    throw new ApiError(`Authentication failed`, 401);
+  if (!response.tokens.access_token) {
+    throw Error();
   }
+  const userInfo = await getUserInfo(response.tokens.access_token);
+  await isAdminOrThrow(userInfo.id, userInfo.email);
+
+  return response.tokens;
 }
 
 export async function getTokensWithRefreshToken(refreshToken: string) {
